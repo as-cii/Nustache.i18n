@@ -5,18 +5,21 @@ This library aims to be an helper to discover localizable tags on a template. Al
 {{ localize "key" }}
 ```
 
+## Installation
+Just search for `Nustache.i18n` on NuGet and install it in your solution.
+
 ## Usage
 Nustache.i18n provides two simple, but effective, methods to translate templates.
 
 ### Localizable tags extraction
-This helper allows you to search for all the localizable tags on the template.
+This method allows you to search for all the localizable tags on the template.
 ```csharp
 string template = File.ReadAllText("file");
 List<string> keys = Localizer.ExtractLocalizableKeys(template);
 ```
 
 ### Effective Translation
-This helper does the actual translation. You can also provide a placeholder that will come up when a translation cannot be found.
+This method does the actual translation. You can also provide a placeholder that will come up when a translation cannot be found.
 ```csharp
 string placeholder = "<translation.missing>";
 var translations = new Dictionary<string, string>
@@ -24,9 +27,10 @@ var translations = new Dictionary<string, string>
     { "hello", "ciao" },
     { "world", "mondo" }
 };
-string template = "{{ localize \"hello\" }}, {{ localize \"world\" }}";
+string template = "{{tag1}} {{ localize \"hello\" }}, {{ localize \"world\" }} {{tag2}}";
 
 string translated = Localizer.Translate(template, translations, placeholder);
+// Output: {{tag1}} ciao, mondo {{tag2}}
 ```
 
-This method will ignore and keep every other tag that is present on the template, substituting only the localizable ones.
+Note in the example above that any other tag that is not localizable will be kept as-is.
